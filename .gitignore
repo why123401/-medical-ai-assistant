@@ -51,6 +51,10 @@ chat__history/
 # MD5 cache
 md5.text
 
+# Project-specific
+medical_ai.db
+eval_reports/
+
 # OS files
 .DS_Store
 Thumbs.db

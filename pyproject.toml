@@ -1,0 +1,51 @@
+[project]
+name = "medical-ai-assistant"
+version = "1.0.0"
+description = "Enterprise-grade RAG assistant for medical device support"
+requires-python = ">=3.11"
+dependencies = [
+    # Web framework
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "python-multipart>=0.0.12",
+    "streamlit>=1.41.0",
+    "requests>=2.32.0",
+
+    # AI / LLM
+    "langchain>=0.3.0",
+    "langchain-community>=0.3.0",
+    "langchain-core>=0.3.0",
+    "langchain-chroma>=0.1.0",
+    "langchain-text-splitters>=0.3.0",
+    "langgraph>=0.2.0",
+    "dashscope>=1.20.0",
+
+    # RAG
+    "chromadb>=0.5.0",
+
+    # Data / DB
+    "sqlalchemy>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+
+    # PDF processing
+    "pymupdf>=1.24.0",
+
+    # Dev
+    "pytest>=8.0.0",
+    "pytest-cov>=6.0.0",
+    "httpx>=0.28.0",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "psycopg2-binary>=2.9.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120

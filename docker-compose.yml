@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${API_PORT:-8000}:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data/knowledge:/app/data/knowledge
+      - ./chroma_db:/app/chroma_db
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${STREAMLIT_PORT:-8501}:8501"
+    env_file:
+      - .env
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - API_BASE_URL=http://api:8000
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: medical_ai
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
